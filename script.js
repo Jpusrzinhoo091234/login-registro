@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     document.querySelector('.form-container').appendChild(exportImportContainer);
     
-    // Load data from logins.json and initialize app
+    // Initialize app
     initializeApp();
     
     // Event Listeners
@@ -79,11 +79,22 @@ document.addEventListener('DOMContentLoaded', () => {
     themeToggle.addEventListener('change', handleThemeToggle);
     
     // Functions
-    async function initializeApp() {
+    function initializeApp() {
         try {
-            // Load data from logins.json
-            const response = await fetch('logins.json');
-            const data = await response.json();
+            // Load data from localStorage
+            const storedData = localStorage.getItem('loginData');
+            let data;
+            
+            if (storedData) {
+                data = JSON.parse(storedData);
+            } else {
+                // Initialize with default data if nothing is stored
+                data = {
+                    users: {},
+                    theme: 'light'
+                };
+                localStorage.setItem('loginData', JSON.stringify(data));
+            }
             
             // Apply theme from saved settings
             if (data.theme === 'dark') {
@@ -111,23 +122,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    async function saveThemePreference(theme) {
+    function saveThemePreference(theme) {
         try {
             // Load current data
-            const response = await fetch('logins.json');
-            const data = await response.json();
+            const storedData = localStorage.getItem('loginData');
+            const data = storedData ? JSON.parse(storedData) : { users: {}, theme: 'light' };
             
             // Update theme
             data.theme = theme;
             
-            // Save back to logins.json
-            await saveToLoginsJson(data);
+            // Save back to localStorage
+            localStorage.setItem('loginData', JSON.stringify(data));
         } catch (error) {
             console.error('Error saving theme preference:', error);
         }
     }
     
-    async function handleLogin() {
+    function handleLogin() {
         // Reset message
         loginMessage.textContent = '';
         loginMessage.className = 'message';
@@ -143,9 +154,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         try {
-            // Get users from logins.json
-            const response = await fetch('logins.json');
-            const data = await response.json();
+            // Get users from localStorage
+            const storedData = localStorage.getItem('loginData');
+            const data = storedData ? JSON.parse(storedData) : { users: {}, theme: 'light' };
             const users = data.users || {};
             
             // Check if user exists and password matches
@@ -173,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    async function handleRegister() {
+    function handleRegister() {
         // Reset message
         registerMessage.textContent = '';
         registerMessage.className = 'message';
@@ -200,9 +211,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         try {
-            // Get users from logins.json
-            const response = await fetch('logins.json');
-            const data = await response.json();
+            // Get users from localStorage
+            const storedData = localStorage.getItem('loginData');
+            const data = storedData ? JSON.parse(storedData) : { users: {}, theme: 'light' };
             const users = data.users || {};
             
             // Check if username already exists
@@ -215,8 +226,8 @@ document.addEventListener('DOMContentLoaded', () => {
             users[username] = password;
             data.users = users;
             
-            // Save updated data to logins.json
-            await saveToLoginsJson(data);
+            // Save updated data to localStorage
+            localStorage.setItem('loginData', JSON.stringify(data));
             
             // Registration successful
             showMessage(registerMessage, 'Cadastro realizado com sucesso!', 'success');
@@ -286,34 +297,12 @@ document.addEventListener('DOMContentLoaded', () => {
         element.className = `message ${type}`;
     }
     
-    // Função para salvar dados no arquivo logins.json
-    async function saveToLoginsJson(data) {
-        try {
-            const response = await fetch('logins.json', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data, null, 2)
-            });
-            
-            if (!response.ok) {
-                throw new Error('Failed to save data');
-            }
-            
-            return true;
-        } catch (error) {
-            console.error('Error saving to logins.json:', error);
-            return false;
-        }
-    }
-    
     // Função para exportar usuários para um arquivo JSON
-    async function exportUsers() {
+    function exportUsers() {
         try {
-            // Get users from logins.json
-            const response = await fetch('logins.json');
-            const data = await response.json();
+            // Get users from localStorage
+            const storedData = localStorage.getItem('loginData');
+            const data = storedData ? JSON.parse(storedData) : { users: {}, theme: 'light' };
             const users = data.users || {};
             
             if (Object.keys(users).length === 0) {
@@ -343,7 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const reader = new FileReader();
         
-        reader.onload = async function(e) {
+        reader.onload = function(e) {
             try {
                 const importedUsers = JSON.parse(e.target.result);
                 
@@ -352,22 +341,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     throw new Error('Formato de arquivo inválido.');
                 }
                 
-                // Get current data from logins.json
-                const response = await fetch('logins.json');
-                const data = await response.json();
+                // Get current data from localStorage
+                const storedData = localStorage.getItem('loginData');
+                const data = storedData ? JSON.parse(storedData) : { users: {}, theme: 'light' };
                 
                 // Mesclar usuários importados com os atuais
                 const mergedUsers = { ...data.users, ...importedUsers };
                 data.users = mergedUsers;
                 
-                // Save updated data to logins.json
-                const saveResult = await saveToLoginsJson(data);
+                // Save updated data to localStorage
+                localStorage.setItem('loginData', JSON.stringify(data));
                 
-                if (saveResult) {
-                    alert(`Importação concluída com sucesso! ${Object.keys(importedUsers).length} usuários importados.`);
-                } else {
-                    alert('Erro ao salvar usuários importados.');
-                }
+                alert(`Importação concluída com sucesso! ${Object.keys(importedUsers).length} usuários importados.`);
                 
                 // Limpar o input de arquivo
                 fileInput.value = '';
