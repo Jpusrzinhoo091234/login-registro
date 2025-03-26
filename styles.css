@@ -1,0 +1,301 @@
+/* CSS Variables for theme colors */
+:root {
+    /* Light theme (default) */
+    --bg-color: #f5f5f5;
+    --container-bg: white;
+    --text-color: #333;
+    --label-color: #666;
+    --border-color: #ddd;
+    --primary-color: #4285f4;
+    --primary-hover: #3367d6;
+    --error-bg: #ffebee;
+    --error-color: #c62828;
+    --success-bg: #e8f5e9;
+    --success-color: #2e7d32;
+    --logout-color: #f44336;
+    --logout-hover: #d32f2f;
+    --export-color: #4caf50;
+    --export-hover: #388e3c;
+    --import-color: #ff9800;
+    --import-hover: #f57c00;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+    --bg-color: #121212;
+    --container-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --label-color: #b0b0b0;
+    --border-color: #333;
+    --primary-color: #4285f4;
+    --primary-hover: #5c9aff;
+    --error-bg: #3c1a1a;
+    --error-color: #ff6b6b;
+    --success-bg: #1a3c1a;
+    --success-color: #66bb6a;
+    --logout-color: #f44336;
+    --logout-hover: #ff5c5c;
+    --export-color: #4caf50;
+    --export-hover: #66bb6a;
+    --import-color: #ff9800;
+    --import-hover: #ffb74d;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    background-color: var(--container-bg);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px var(--shadow-color);
+    overflow: hidden;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-container {
+    padding: 30px;
+}
+
+.form-header {
+    margin-bottom: 25px;
+}
+
+.toggle {
+    display: flex;
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.toggle button {
+    flex: 1;
+    padding: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    color: var(--text-color);
+}
+
+.toggle button.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.form {
+    transition: all 0.3s ease;
+}
+
+.form.hidden {
+    display: none;
+}
+
+.form h2 {
+    margin-bottom: 20px;
+    color: var(--text-color);
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--label-color);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: var(--container-bg);
+    color: var(--text-color);
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+.message {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.message.error {
+    background-color: var(--error-bg);
+    color: var(--error-color);
+}
+
+.message.success {
+    background-color: var(--success-bg);
+    color: var(--success-color);
+}
+
+.welcome-panel {
+    padding: 30px;
+    text-align: center;
+}
+
+.welcome-panel.hidden {
+    display: none;
+}
+
+.welcome-panel h2 {
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+
+.logout-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: var(--logout-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: var(--logout-hover);
+}
+
+/* Estilos para os botões de exportar e importar */
+.export-import-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.export-btn, .import-btn {
+    flex: 1;
+    padding: 10px;
+    background-color: var(--export-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.export-btn:hover {
+    background-color: var(--export-hover);
+}
+
+.import-btn {
+    background-color: var(--import-color);
+}
+
+.import-btn:hover {
+    background-color: var(--import-hover);
+}
+
+/* Theme toggle switch */
+.theme-switch-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+    margin: 0 10px;
+}
+
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 30px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--primary-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(30px);
+}
+
+.theme-label {
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 90%;
+    }
+    
+    .form-container {
+        padding: 20px;
+    }
+}
